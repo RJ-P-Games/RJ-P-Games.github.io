@@ -52,30 +52,13 @@ function switchTab(tabName) {
 }
 
 function loadMovies() {
-    // ALL movies from your complete collection
-    movies = [
-        { id: 1, name: "Deadpool and Wolverine", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/dp3_1sht_digital_srgb_ka_swords_v5_resized.jpg", url: "https://drive.google.com/file/d/1B_eiKUt7N5OxyUN9c37LG0pxcErP4yJ6/view", author: "Unknown", year: 2024, genre: ["Action"] },
-        { id: 2, name: "Captain America: The First Avenger", cover: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/CaptainAmericaTheFirstAvengerComicConPoster.webp", url: "https://drive.google.com/file/d/1n_-YoXC2sFts08F4W2inaW1AGobt1C2y/view?usp=sharing", author: "Unknown", year: 2011, genre: ["Action"] },
-        { id: 3, name: "Captain America: Brave New World", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/e72a581c-12cb-4e03-ae93-a1ebcb7d07fa.sized-1000x1000.jpg", url: "https://drive.google.com/file/d/1pJ5N0z8bQFpqeMx2UrZqrU1526ygzxDm/view?usp=sharing", author: "Unknown", year: 2025, genre: ["Action"] },
-        { id: 4, name: "Dog Man", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/redraw-of-the-dog-man-movie-poster-in-the-comic-book-covers-v0-6fajo4f1dmbe1.jpeg", url: "https://drive.google.com/file/d/1fGpb8UBbynGx9NaHDc5wPzYjjUAD7gLW/view", author: "Unknown", year: 2025, genre: ["Animation"] },
-        { id: 5, name: "Spider-Man: Into the Spider-Verse", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM%40._V1_FMjpg_UX1000_.jpg", url: "https://drive.google.com/file/d/1V3Bq0lrDQUxJay5DDs3gK69ZvRNb1j2u/view", author: "Unknown", year: 2018, genre: ["Animation"] },
-        { id: 6, name: "Spider-Man: Across the Spider-Verse", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/spider-man-across-the-spider-verse-poster.jpg", url: "https://drive.google.com/file/d/1Sd1l_LhKRp_2OE5gRJJyPubnZjJccLgQ/view", author: "Unknown", year: 2023, genre: ["Animation"] },
-        { id: 7, name: "Moana 2", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/Moana_2_Official_Poster.jpg", url: "https://drive.google.com/file/d/1khAaDGsMt8pAGqtIPJERCqM_PgpiLShO/view", author: "Unknown", year: 2024, genre: ["Animation"] },
-        { id: 8, name: "The Lego Batman Movie", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/war-d619743d.jpg", url: "https://drive.google.com/file/d/1Xn4F4GNvfKOljko2ZE_JUQcBWIHhO0ql/view", author: "Unknown", year: 2017, genre: ["Animation"] },
-        { id: 9, name: "The Super Mario Bros. Movie", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/the-super-mario-bros-movie_7bqmuyso.jpg", url: "https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/view", author: "Unknown", year: 2023, genre: ["Animation"] },
-        { id: 10, name: "Sonic the Hedgehog", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/MV5BYTg2Yjc5MzItNzVmMi00MTllLWI2MDQtOTYyOWNjYWIxNzEzXkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg", url: "https://drive.google.com/file/d/1h1hi-3Hn1awll6u51WQnGjkHqm3uJejF/view", author: "Unknown", year: 2020, genre: ["Action"] },
-        { id: 11, name: "Sonic the Hedgehog 2", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/MovieImages@main/sonic_the_hedgehog_two_ver13_xlg.avif", url: "https://drive.google.com/file/d/1cXe1a5ueZU9U_QZBU1-XpgNK0s6wi4o6/view", author: "Unknown", year: 2022, genre: ["Action"] },
-        { id: 12, name: "Sonic the Hedgehog 3", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/IMG_4074-966x1200.jpg", url: "https://drive.google.com/file/d/1-zHQI9U47xaDtLR9qNpHGBmk63Nnc07b/view?usp=sharing", author: "Unknown", year: 2024, genre: ["Action"] },
-        { id: 13, name: "Sonic OVA", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/MovieImages@main/SonicanimeVHS.jpg", url: "https://drive.google.com/file/d/1_vnuQWGnvMa4uvt9c2MVYYznq_FjgHav/view", author: "Unknown", year: 1996, genre: ["Animation"] },
-        { id: 14, name: "Teenage Mutant Ninja Turtles: Mutant Mayhem", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/teenage_mutant_ninja_turtles_mutant_mayhem.jpg", url: "https://drive.google.com/file/d/1IZNQlKBJi5HwRJDokQ-YuxfteFKgLZI5/view", author: "Unknown", year: 2023, genre: ["Animation"] },
-        { id: 15, name: "Inside Out", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/71PFAPwyZRL.jpg", url: "https://drive.google.com/file/d/1BEPGPg_iR7L5QFJ91SizjlA6khwj6j1e/view", author: "Unknown", year: 2015, genre: ["Animation"] },
-        { id: 16, name: "Inside Out 2", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/81do41OmwiL.jpg", url: "https://drive.google.com/file/d/148ae2JtLzIZwy-AKjtRgLZPNf3vEmQOE/view", author: "Unknown", year: 2024, genre: ["Animation"] },
-        { id: 17, name: "The Lego Movie", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/s-l1200.jpg", url: "https://drive.google.com/file/d/1j2kFu1apjVp0E2_xojdiqASlQOc8RBit/view", author: "Unknown", year: 2014, genre: ["Animation"] },
-        { id: 18, name: "The Lego Movie 2", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/71ghbVie4TL._UF894%2C1000_QL80_.jpg", url: "https://drive.google.com/file/d/1_sb4Ogn-0xQX3Znf21COpLMrfs_x6Nuv/view", author: "Unknown", year: 2019, genre: ["Animation"] },
-        { id: 19, name: "The Regular Show: The Movie", cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/MV5BYWZlYjM3ZTAtOWE1YS00NzgyLThjYjctNzU5MDhhODExYWJhXkEyXkFqcGc%40._V1_.jpg", url: "https://drive.google.com/file/d/1q1PFmdU3DJRopHbRU5Xmg2zJxA3hjfzX/view?usp=sharing", author: "Unknown", year: 2015, genre: ["Animation"] },
-        { id: 20, name: "Scooby-Doo! and the Witch's Ghost", cover: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQVsxspVRryos59ijGqPcRiyKkmxXZbHVXboKCPkcoSaJuZO6fa", url: "https://drive.google.com/file/d/1_hkjpVLPviBFV8320Drj4jjC9DfSzueB/view?usp=drive_link", author: "Unknown", year: 1999, genre: ["Animation"] }
-    ];
-    
+    // Load all movies from external file
+    if (typeof ALL_MOVIES !== 'undefined') {
+        movies = ALL_MOVIES;
+    } else {
+        // Fallback: load movies inline if external file not loaded
+        movies = [];
+    }
     displayMovies(movies);
 }
 
