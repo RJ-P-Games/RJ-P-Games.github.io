@@ -1,4 +1,5 @@
 const container = document.getElementById('container');
+const movieContainer = document.getElementById('movieContainer');
 const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
 const searchBar = document.getElementById('searchBar');
@@ -15,13 +16,273 @@ let zonesURL = zonesurls[Math.floor(Math.random() * zonesurls.length)];
 const coverURL = "https://cdn.jsdelivr.net/gh/%67%6e%2d%6d%61%74%68/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/%67%6e%2d%6d%61%74%68/html@main";
 let zones = [];
+let movies = [];
 let popularityData = {};
+let currentTab = 'games';
 const featuredContainer = document.getElementById('featuredZones');
 function toTitleCase(str) {
   return str.replace(
     /\w\S*/g,
     text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
   );
+}
+
+function switchTab(tabName) {
+    currentTab = tabName;
+    
+    // Update tab buttons
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+    
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    document.getElementById(`${tabName}Tab`).classList.add('active');
+    
+    // Load appropriate content
+    if (tabName === 'movies') {
+        loadMovies();
+    } else {
+        // Games are already loaded
+        filterZones();
+    }
+}
+
+function loadMovies() {
+    movies = [
+        {
+            id: 1,
+            name: "Deadpool and Wolverine",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/dp3_1sht_digital_srgb_ka_swords_v5_resized.jpg",
+            url: "https://drive.google.com/file/d/1B_eiKUt7N5OxyUN9c37LG0pxcErP4yJ6/view",
+            author: "Shawn Levy",
+            year: 2024,
+            genre: ["Action", "Comedy"]
+        },
+        {
+            id: 2,
+            name: "Captain America: The First Avenger",
+            cover: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/CaptainAmericaTheFirstAvengerComicConPoster.webp",
+            url: "https://drive.google.com/file/d/1n_-YoXC2sFts08F4W2inaW1AGobt1C2y/view?usp=sharing",
+            author: "Joe Johnston",
+            year: 2011,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 3,
+            name: "Captain America: Brave New World",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/e72a581c-12cb-4e03-ae93-a1ebcb7d07fa.sized-1000x1000.jpg",
+            url: "https://drive.google.com/file/d/1pJ5N0z8bQFpqeMx2UrZqrU1526ygzxDm/view?usp=sharing",
+            author: "Julius Onah",
+            year: 2025,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 4,
+            name: "Dog Man",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/redraw-of-the-dog-man-movie-poster-in-the-comic-book-covers-v0-6fajo4f1dmbe1.jpeg",
+            url: "https://drive.google.com/file/d/1fGpb8UBbynGx9NaHDc5wPzYjjUAD7gLW/view",
+            author: "Peter Hastings",
+            year: 2025,
+            genre: ["Animation", "Family"]
+        },
+        {
+            id: 5,
+            name: "Spider-Man: Into the Spider-Verse",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM%40._V1_FMjpg_UX1000_.jpg",
+            url: "https://drive.google.com/file/d/1V3Bq0lrDQUxJay5DDs3gK69ZvRNb1j2u/view",
+            author: "Bob Persichetti",
+            year: 2018,
+            genre: ["Animation", "Action"]
+        },
+        {
+            id: 6,
+            name: "Spider-Man: Across the Spider-Verse",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/spider-man-across-the-spider-verse-poster.jpg",
+            url: "https://drive.google.com/file/d/1Sd1l_LhKRp_2OE5gRJJyPubnZjJccLgQ/view",
+            author: "Joaquim Dos Santos",
+            year: 2023,
+            genre: ["Animation", "Action"]
+        },
+        {
+            id: 7,
+            name: "Moana 2",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/Moana_2_Official_Poster.jpg",
+            url: "https://drive.google.com/file/d/1khAaDGsMt8pAGqtIPJERCqM_PgpiLShO/view",
+            author: "David Derrick Jr.",
+            year: 2024,
+            genre: ["Animation", "Adventure"]
+        },
+        {
+            id: 8,
+            name: "The Lego Batman Movie",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/war-d619743d.jpg",
+            url: "https://drive.google.com/file/d/1Xn4F4GNvfKOljko2ZE_JUQcBWIHhO0ql/view",
+            author: "Chris McKay",
+            year: 2017,
+            genre: ["Animation", "Comedy"]
+        },
+        {
+            id: 9,
+            name: "The Super Mario Bros. Movie",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/the-super-mario-bros-movie_7bqmuyso.jpg",
+            url: "https://drive.google.com/file/d/1q2pk3lo5VIDWKQq2lCh_UTC_V9Zkv-_X/view",
+            author: "Aaron Horvath",
+            year: 2023,
+            genre: ["Animation", "Adventure"]
+        },
+        {
+            id: 10,
+            name: "Sonic the Hedgehog",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/MV5BYTg2Yjc5MzItNzVmMi00MTllLWI2MDQtOTYyOWNjYWIxNzEzXkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg",
+            url: "https://drive.google.com/file/d/1h1hi-3Hn1awll6u51WQnGjkHqm3uJejF/view",
+            author: "Jeff Fowler",
+            year: 2020,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 11,
+            name: "Five Nights at Freddy's",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/Fnaf_Movie_Poster.png",
+            url: "https://drive.google.com/file/d/1tyzXrXFux15AXpZxtiM61p1R1zO6NbSF/view",
+            author: "Emma Tammi",
+            year: 2023,
+            genre: ["Horror", "Mystery"]
+        },
+        {
+            id: 12,
+            name: "Oppenheimer",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/Oppenheimer.jpg",
+            url: "https://drive.google.com/file/d/1GLqywDPqfZSLmLAiKC8j2l0o52cAGP8S/view",
+            author: "Christopher Nolan",
+            year: 2023,
+            genre: ["Biography", "Drama"]
+        },
+        {
+            id: 13,
+            name: "Barbie",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/p13472534_p_v8_am.jpg",
+            url: "https://drive.google.com/file/d/1K88LvZ6q9KRwsdiVQ72Wrh5DQqWVLkd3/view",
+            author: "Greta Gerwig",
+            year: 2023,
+            genre: ["Comedy", "Fantasy"]
+        },
+        {
+            id: 14,
+            name: "The Flash",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/The_Flash.jpg",
+            url: "https://drive.google.com/file/d/1ApUHMkZM-j3vM-rSG-kvjk3KuvJNAsXp/view",
+            author: "Andy Muschietti",
+            year: 2023,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 15,
+            name: "Black Panther",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/black-panther-poster.jpg",
+            url: "https://drive.google.com/file/d/1wdUOiz7tI3R5vTz779h7CesAW5h0kUh1/view",
+            author: "Ryan Coogler",
+            year: 2018,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 16,
+            name: "Iron Man",
+            cover: "https://www.dropbox.com/scl/fi/ia7uylbhw3lrkx2qczjdk/Iron_Man_-2008_film-_poster.jpg?rlkey=d1jlafqgohehies361s2rmmrt&st=67f204bk&dl=1",
+            url: "https://drive.google.com/file/d/1etZlXVkk2dmSbB5m2J4EK80c7FggVF4V/view",
+            author: "Jon Favreau",
+            year: 2008,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 17,
+            name: "Avengers: Infinity War",
+            cover: "https://www.dropbox.com/scl/fi/n0m9lddipro8al8at1pp5/Avengers_Infinity_War_poster.jpg?rlkey=y8pm491al2jezeuk5g5velk2b&st=gez6ur5v&dl=1",
+            url: "https://drive.google.com/file/d/1zpl7Dngm7ESW_yLZvcQMm9AhmR1izyus/view?usp=sharing",
+            author: "Anthony Russo",
+            year: 2018,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 18,
+            name: "Avengers: Endgame",
+            cover: "https://www.dropbox.com/scl/fi/6960dcl1s0tn4g27f0oim/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM-._V1_FMjpg_UX1000_.jpg?rlkey=c7je20mvdls88tyr6rv5cpvqc&st=j1chpl50&dl=1",
+            url: "https://drive.google.com/file/d/1bqXaAnYlzvDN8Ic21OTHu7mQ2eBsEBha/view?usp=sharing",
+            author: "Anthony Russo",
+            year: 2019,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 19,
+            name: "Spider-Man",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/ourazguupfx71.jpg",
+            url: "https://drive.google.com/file/d/1sqWGrmbGc5lBmoFbtfMSIaqb60eXppvF/view",
+            author: "Sam Raimi",
+            year: 2002,
+            genre: ["Action", "Adventure"]
+        },
+        {
+            id: 20,
+            name: "The Wild Robot",
+            cover: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/MV5BZWNiZjVlZTUtNGUwYi00MjJmLTg2MDctNWEzYTJiMzY1ODc4XkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg",
+            url: "https://drive.google.com/file/d/1_N9iHDAM3RbU2a0GTfgcNXDGuZDT_yZ-/view",
+            author: "Chris Sanders",
+            year: 2024,
+            genre: ["Animation", "Adventure"]
+        }
+    ];
+    
+    displayMovies(movies);
+}
+
+function displayMovies(movieList) {
+    movieContainer.innerHTML = "";
+    movieList.forEach((movie, index) => {
+        const movieItem = document.createElement("div");
+        movieItem.className = "zone-item";
+        movieItem.onclick = () => openMovie(movie);
+        
+        const img = document.createElement("img");
+        img.src = movie.cover;
+        img.alt = movie.name;
+        img.loading = "lazy";
+        movieItem.appendChild(img);
+        
+        const button = document.createElement("button");
+        button.textContent = `${movie.name} (${movie.year})`;
+        button.onclick = (event) => {
+            event.stopPropagation();
+            openMovie(movie);
+        };
+        movieItem.appendChild(button);
+        movieContainer.appendChild(movieItem);
+    });
+    
+    if (movieContainer.innerHTML === "") {
+        movieContainer.innerHTML = "No movies found.";
+    } else {
+        document.getElementById("allMoviesSummary").textContent = `All Movies (${movieList.length})`;
+    }
+}
+
+function openMovie(movie) {
+    if (zoneFrame.contentDocument === null) {
+        zoneFrame = document.createElement("iframe");
+        zoneFrame.id = "zoneFrame";
+        zoneViewer.appendChild(zoneFrame);
+    }
+    
+    zoneFrame.src = movie.url;
+    document.getElementById('zoneName').textContent = movie.name;
+    document.getElementById('zoneId').textContent = movie.id;
+    document.getElementById('zoneAuthor').textContent = `by ${movie.author} (${movie.year})`;
+    document.getElementById('zoneAuthor').href = "#";
+    
+    zoneViewer.style.display = "block";
+    zoneViewer.hidden = false;
 }
 async function listZones() {
     try {
@@ -296,8 +557,18 @@ function filterZones2() {
 
 function filterZones() {
     const query = searchBar.value.toLowerCase();
-    const filteredZones = zones.filter(zone => zone.name.toLowerCase().includes(query));
-    displayZones(filteredZones);
+    
+    if (currentTab === 'movies') {
+        const filteredMovies = movies.filter(movie => 
+            movie.name.toLowerCase().includes(query) ||
+            movie.author.toLowerCase().includes(query) ||
+            movie.genre.some(g => g.toLowerCase().includes(query))
+        );
+        displayMovies(filteredMovies);
+    } else {
+        const filteredZones = zones.filter(zone => zone.name.toLowerCase().includes(query));
+        displayZones(filteredZones);
+    }
 }
 
 function openZone(file) {
